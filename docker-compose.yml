@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    restart: unless-stopped
+    environment:
+      PGPASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: backup
+    volumes:
+      - ~/.config/postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    networks:
+      - optimus
+  
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
+    ports:
+      - "15432:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin@localhost.dev
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin
+    networks:
+      - optimus
+
+networks:
+  optimus:
+    driver: bridge
